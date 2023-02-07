@@ -1,0 +1,38 @@
+syntax = 'proto3';
+
+package fileserver;
+
+option go_package = "github.com/SerjZimmer/testovoe1/pkg/fileserver;fileserver";
+
+import "google/protobuf/timestamp.proto";
+
+service FileService {
+  rpc Download(DownloadRequest) returns(stream DownloadResponse);
+  rpc Upload(stream UploadRequest) returns (UploadResponse);
+  rpc FileList(FileListRequest) returns(FileListResponse);
+}
+
+message UploadRequest {
+  bytes chunk = 1;
+}
+message UploadResponse {
+  string id = 1;
+}
+message DownloadRequest{
+  string id = 1;
+}
+message DownloadResponse{
+  bytes chunk = 1;
+}
+message FileListRequest {}
+
+message FileListResponse {
+  repeated FileInfo files = 1;
+}
+
+message FileInfo {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}
